@@ -22,7 +22,7 @@ import HeaderLine from './HeaderLine.vue';
 
 <template>
   <HeaderLine class="headerline"></HeaderLine>
-  <input id="date-input" type="date">
+  <input @change="getData()" id="date-input" type="date">
   <div class="options-box">
     <p>
       <input @change="getData()" id="checkbox-only-present" type="checkbox"> Nur Anwesende anzeigen
@@ -60,7 +60,9 @@ export default {
       let only_present = document.querySelector('#checkbox-only-present').checked;
       let display_trainers = document.querySelector('#checkbox-display-trainers').checked;
 
-      fetch(`http://localhost:3102/attendance?day=${this.getCurrentDay()}&onlyPresentUsers=${this.numFromBool(only_present)}&displayTrainers=${this.numFromBool(display_trainers)}`, {
+      let day = document.querySelector('#date-input').value;
+
+      fetch(`http://${import.meta.env.VITE_API_URL}/attendance?day=${day}&onlyPresentUsers=${this.numFromBool(only_present)}&displayTrainers=${this.numFromBool(display_trainers)}`, {
         method: 'GET',
         headers: {
           'Allow-Control-Access-Origin': '*'
@@ -68,7 +70,7 @@ export default {
       })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         this.data.users = data;
         this.$forceUpdate();
       })
@@ -76,7 +78,6 @@ export default {
 
     },
     numFromBool(bool) {
-      console.log(bool)
       if (bool == false) {
         return 0;
       } else {
@@ -85,10 +86,15 @@ export default {
     },
     getCurrentDay() {
       let date = new Date();
-      return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+      return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() + 1}`;
+    },
+    setDateInputToToday() {
+      let date = new Date();
+      document.querySelector('#date-input').value = date.toISOString().substring(0, 10);
     }
   },
   mounted() {
+    this.setDateInputToToday();
     this.getData();
   }
 }
