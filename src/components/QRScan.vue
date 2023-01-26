@@ -47,7 +47,7 @@ export default {
       this.data.responsetext = "Übermittle Daten...";
       this.$forceUpdate();
       // fetch(`http://${import.meta.env.VITE_API_URL}/attendance/${decodedText}`, {
-      fetch(`http://https://happy-gold-capybara.cyclic.app/attendance/${decodedText}`, {
+      fetch(`http://happy-gold-capybara.cyclic.app/attendance/${decodedText}`, {
         method: 'POST'
       })
       .then((res) => res.json())
