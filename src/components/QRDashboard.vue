@@ -62,7 +62,9 @@ export default {
 
       let day = document.querySelector('#date-input').value;
 
-      fetch(`http://${import.meta.env.VITE_API_URL}/attendance?day=${day}&onlyPresentUsers=${this.numFromBool(only_present)}&displayTrainers=${this.numFromBool(display_trainers)}`, {
+      // fetch(`http://${import.meta.env.VITE_API_URL}/attendance?day=${day}&onlyPresentUsers=${this.numFromBool(only_present)}&displayTrainers=${this.numFromBool(display_trainers)}`, {
+      fetch(`http://https://happy-gold-capybara.cyclic.app/attendance?day=${day}&onlyPresentUsers=${this.numFromBool(only_present)}&displayTrainers=${this.numFromBool(display_trainers)}`, {
+
         method: 'GET',
         headers: {
           'Allow-Control-Access-Origin': '*'
