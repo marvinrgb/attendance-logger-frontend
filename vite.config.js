@@ -9,9 +9,10 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
+    },
   },
-  build: {
-    outDir: 'dist/public'
-  }
+  // build: {
+  //   outDir: 'dist/public',
+  // },
+  // transpile: ['html5-qrcode']
 })

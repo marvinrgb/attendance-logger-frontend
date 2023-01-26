@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "vite --host",
-    "start": "cd dist && npm install && node app.js",
+    "start": "serve -s dist",
+    "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
