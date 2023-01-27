@@ -1,23 +1,5 @@
 <script setup>
 import HeaderLine from './HeaderLine.vue';
-// const users = [
-//   {
-//     "name": "Marvin Wolfart",
-//     "present": true
-//   },
-//   {
-//     "name": "erger ergerg",
-//     "present": false
-//   },
-//   {
-//     "name": "ztuj rztuj",
-//     "present": true
-//   },
-//   {
-//     "name": "rtjz rtzju",
-//     "present": false
-//   }
-// ]
 </script>
 
 <template>
@@ -29,6 +11,9 @@ import HeaderLine from './HeaderLine.vue';
     </p>
     <p>
       <input @change="getData()" id="checkbox-display-trainers" type="checkbox"> Trainer anzeigen
+    </p>
+    <p>
+      <button @click="exportExcel()" id="button-excel-export">Als Excel exportieren</button>
     </p>
   </div>
   <table class="table-user-data">
@@ -48,6 +33,62 @@ import HeaderLine from './HeaderLine.vue';
   </table>
 </template>
 
+
+<style scoped>
+  @media only screen and (orientation: landscape) {
+    #button-excel-export {
+      padding: 0.5vh 1vw;
+    }
+    .options-box {
+      width: 70%;
+      display: flex;
+      margin: 3vh auto 5vh auto;
+    }
+
+    .options-box p {
+      margin: 0 1vw;
+    }
+    .table-user-data {
+      width: 80%;
+      display: block;
+      margin: 0 auto 5vh auto;
+      border-spacing: 2vw 0;
+      border-collapse: collapse;
+    }
+    .table-user-data td {
+      border: 1px solid black;
+      padding: 0.5vh 2vw;
+    }
+    .table-user-data th {
+      border-bottom: 2px solid black;
+      padding: 0.5vh 2vw;
+      width: 25%;
+    }
+    .table-user-data tr {
+      width: 100%;
+    }
+    /* .user-name {
+      width: 50%;
+    } */
+    .headerline {
+      height: 8vh;
+    }
+    #date-input {
+      display: block;
+      margin: 2vh auto;
+    }
+    .user-present {
+      background-color: #0f0;
+    }
+    .user-absent {
+      background-color: #f00;
+    }
+    .user-presence {
+      width: 30%; 
+    }
+  }
+</style>
+
 <script>
 export default {
   data() {
@@ -62,8 +103,8 @@ export default {
 
       let day = document.querySelector('#date-input').value;
 
-      // fetch(`http://${import.meta.env.VITE_API_URL}/attendance?day=${day}&onlyPresentUsers=${this.numFromBool(only_present)}&displayTrainers=${this.numFromBool(display_trainers)}`, {
-      fetch(`https://attendance-logger-api-production.up.railway.app/attendance?day=${day}&onlyPresentUsers=${this.numFromBool(only_present)}&displayTrainers=${this.numFromBool(display_trainers)}`, {
+      fetch(`http://${import.meta.env.VITE_API_URL}/attendance?day=${day}&onlyPresentUsers=${this.numFromBool(only_present)}&displayTrainers=${this.numFromBool(display_trainers)}`, {
+      // fetch(`https://attendance-logger-api-production.up.railway.app/attendance?day=${day}&onlyPresentUsers=${this.numFromBool(only_present)}&displayTrainers=${this.numFromBool(display_trainers)}`, {
         method: 'GET',
         headers: {
           'Allow-Control-Access-Origin': '*'
@@ -90,6 +131,12 @@ export default {
     setDateInputToToday() {
       let date = new Date();
       document.querySelector('#date-input').value = date.toISOString().substring(0, 10);
+    },
+    exportExcel() {
+      let day = document.querySelector('#date-input').value;
+      
+      window.open(`http://${import.meta.env.VITE_API_URL}/excel?day=${day}`)
+
     }
   },
   mounted() {
