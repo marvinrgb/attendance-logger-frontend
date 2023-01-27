@@ -64,7 +64,6 @@ export default {
 
       // fetch(`http://${import.meta.env.VITE_API_URL}/attendance?day=${day}&onlyPresentUsers=${this.numFromBool(only_present)}&displayTrainers=${this.numFromBool(display_trainers)}`, {
       fetch(`https://attendance-logger-api-production.up.railway.app/attendance?day=${day}&onlyPresentUsers=${this.numFromBool(only_present)}&displayTrainers=${this.numFromBool(display_trainers)}`, {
-
         method: 'GET',
         headers: {
           'Allow-Control-Access-Origin': '*'
@@ -76,8 +75,6 @@ export default {
         this.data.users = data;
         this.$forceUpdate();
       })
-
-
     },
     numFromBool(bool) {
       if (bool == false) {
