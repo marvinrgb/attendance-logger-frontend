@@ -12,9 +12,16 @@ import HeaderLine from './HeaderLine.vue';
     <p>
       <input @change="getData()" id="checkbox-display-trainers" type="checkbox"> Trainer anzeigen
     </p>
+  </div>
+  <div class="options-box">
     <p>
       <button @click="exportExcel()" id="button-excel-export">Als Excel exportieren</button>
     </p>
+    <p>
+      <input type="checkbox" @click="activateTimespan()" id="button-activate-timespan"> Zeitspanne auswählen
+    </p>
+    <input disabled id="date-input-span-begin" type="date">
+    <input disabled id="date-input-span-end" type="date">
   </div>
   <table class="table-user-data">
     <tr>
@@ -40,8 +47,9 @@ import HeaderLine from './HeaderLine.vue';
       padding: 0.5vh 1vw;
     }
     .options-box {
-      width: 70%;
+      width: 45%;
       display: flex;
+      align-items: center;
       margin: 3vh auto 5vh auto;
     }
 
@@ -97,6 +105,18 @@ export default {
     }
   },
   methods: {
+    activateTimespan() {
+      let checked = document.querySelector('#button-activate-timespan').checked;
+
+      if (checked) {
+        document.querySelector('#date-input-span-begin').removeAttribute('disabled');
+        document.querySelector('#date-input-span-end').removeAttribute('disabled');
+      } else {
+        document.querySelector('#date-input-span-begin').setAttribute('disabled','true');
+        document.querySelector('#date-input-span-end').setAttribute('disabled', 'true');
+      }
+
+    },
     getData() {
       let only_present = document.querySelector('#checkbox-only-present').checked;
       let display_trainers = document.querySelector('#checkbox-display-trainers').checked;
@@ -131,12 +151,18 @@ export default {
     setDateInputToToday() {
       let date = new Date();
       document.querySelector('#date-input').value = date.toISOString().substring(0, 10);
+      document.querySelector('#date-input-span-begin').value = date.toISOString().substring(0, 10);
+      document.querySelector('#date-input-span-end').value = date.toISOString().substring(0, 10);
     },
     exportExcel() {
-      let day = document.querySelector('#date-input').value;
-      
-      window.open(`http://${import.meta.env.VITE_API_URL}/excel?day=${day}`)
-
+      if (!document.querySelector('#button-activate-timespan').selected) {
+        let day = document.querySelector('#date-input').value;
+        window.open(`http://${import.meta.env.VITE_API_URL}/excel?day_start=${day}&day_end=${day}`)
+      } else {
+        let start_time = document.querySelector('#date-input-span-begin').value;
+        let end_time = document.querySelector('#date-input-span-end').value;
+        window.open(`http://${import.meta.env.VITE_API_URL}/excel?day_start=${start_time}&day_end=${end_time}`)
+      }
     }
   },
   mounted() {
