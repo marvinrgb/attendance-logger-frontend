@@ -123,8 +123,8 @@ export default {
 
       let day = document.querySelector('#date-input').value;
 
-      fetch(`http://${import.meta.env.VITE_API_URL}/attendance?day=${day}&onlyPresentUsers=${this.numFromBool(only_present)}&displayTrainers=${this.numFromBool(display_trainers)}`, {
-      // fetch(`https://attendance-logger-api-production.up.railway.app/attendance?day=${day}&onlyPresentUsers=${this.numFromBool(only_present)}&displayTrainers=${this.numFromBool(display_trainers)}`, {
+      // fetch(`http://${import.meta.env.VITE_API_URL}/attendance?day=${day}&onlyPresentUsers=${this.numFromBool(only_present)}&displayTrainers=${this.numFromBool(display_trainers)}`, {
+      fetch(`https://attendance-logger-api-production.up.railway.app/attendance?day=${day}&onlyPresentUsers=${this.numFromBool(only_present)}&displayTrainers=${this.numFromBool(display_trainers)}`, {
         method: 'GET',
         headers: {
           'Allow-Control-Access-Origin': '*'
@@ -157,11 +157,13 @@ export default {
     exportExcel() {
       if (!document.querySelector('#button-activate-timespan').selected) {
         let day = document.querySelector('#date-input').value;
-        window.open(`http://${import.meta.env.VITE_API_URL}/excel?day_start=${day}&day_end=${day}`)
+        // window.open(`http://${import.meta.env.VITE_API_URL}/excel?day_start=${day}&day_end=${day}`)
+        window.open(`https://attendance-logger-api-production.up.railway.app/excel?day_start=${day}&day_end=${day}`)
       } else {
         let start_time = document.querySelector('#date-input-span-begin').value;
         let end_time = document.querySelector('#date-input-span-end').value;
-        window.open(`http://${import.meta.env.VITE_API_URL}/excel?day_start=${start_time}&day_end=${end_time}`)
+        // window.open(`http://${import.meta.env.VITE_API_URL}/excel?day_start=${start_time}&day_end=${end_time}`)
+        window.open(`https://attendance-logger-api-production.up.railway.app/excel?day_start=${start_time}&day_end=${end_time}`)
       }
     }
   },
