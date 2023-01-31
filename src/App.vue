@@ -21,9 +21,12 @@ import { RouterView } from 'vue-router';
 * {
   padding: 0;
   margin: 0;
+  box-sizing: border-box;
 }
 #app-all {
   height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
 }
 </style>
 

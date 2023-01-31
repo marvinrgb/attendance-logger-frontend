@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import QRDashboard from '../components/QRDashboard.vue';
+// import QRDashboard from '../components/QRDashboard.vue';
+import NewDashboard from '../components/NewDashboard.vue';
 import QRScan from '../components/QRScan.vue';
 
 const router = createRouter({
@@ -8,7 +9,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: QRDashboard
+      component: NewDashboard
     },
     {
       path: '/scan',

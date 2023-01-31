@@ -15,6 +15,7 @@ export default {
 </script>
 
 <style scoped>
+
 #header-all {
   width: 100%;
   background-color: black;
@@ -22,6 +23,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 2vh;
 }
 
 .header-text {
