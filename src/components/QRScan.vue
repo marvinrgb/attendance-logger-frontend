@@ -1,19 +1,64 @@
 <template>
-  <div>
+  <div id="all">
+    <div id="qr-reader"></div>
     <select id="app-cam-select" @change="changeCam()">
       <option v-for="device in data.devices" :key="device" :value="device.id">{{ device.label }}</option>
     </select>
-    <div id="qr-reader"></div>
     <div id="app-response-text">{{ data.responsetext }}</div>
+    <div id="ready-popup" v-if="!ready">
+      <div class="button" @click="[ready = true, startCam()]"><div>Start Scanning</div></div>
+    </div>
   </div>
 </template>
 
 <script setup>
-
+import {ref} from 'vue';
 import { Html5Qrcode } from 'html5-qrcode';
+
+let ready = ref(false);
 </script>
 
 <style scoped>
+* {
+  padding: 0;
+  margin: 0;
+}
+#all {
+  padding-top: 3vh;
+  background-color: black;
+  color: white;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+#ready-popup {
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+}
+#ready-popup .button {
+  font-size: larger;
+  font-weight: bold;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10%;
+  width: 40%;
+  background-color: #222;
+  cursor: pointer;
+  border-radius: 1vh;
+  border: 2px solid #333;
+  box-shadow: 0 0 3vh rgba(255, 255, 255, 0.02);
+}
 #app-response-text {
   display: block;
   margin: 2vh auto;
@@ -29,6 +74,7 @@ import { Html5Qrcode } from 'html5-qrcode';
   width: 90%;
   display: block;
   margin: 0 auto;
+  border: 2px solid white;
 }
 </style>
 
@@ -80,19 +126,23 @@ export default {
     changeCam() {
       let deviceid = document.querySelector('#app-cam-select').value;
       this.startScan(deviceid);
+    },
+    startCam() {
+      this.data.scanned_codes = []
+      this.data.devices = []
+      Html5Qrcode.getCameras().then(devices => {
+        console.log(devices);
+        if (devices && devices.length) {
+          this.data.devices = devices;
+          this.$forceUpdate();
+          let cameraId = devices[0].id;
+          this.startScan(cameraId)
+        }
+      })
     }
   },
   mounted() {
-    this.data.scanned_codes = []
-    this.data.devices = []
-    Html5Qrcode.getCameras().then(devices => {
-      console.log(devices);
-      if (devices && devices.length) {
-        this.data.devices = devices;
-        this.$forceUpdate();
-        let cameraId = devices[0].id;
-        this.startScan(cameraId)
-      }
-    })}
+    
+  }
 }
 </script>
