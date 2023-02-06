@@ -3,7 +3,8 @@
     <div id="header-all">
       <div class="header-text">Attendance Management</div>
       <img class="menu-button" id="burger-menu" src="./icons/menu.png">
-      <img class="menu-button" id="account-menu" src="./icons/account.png">
+      <a href="/scan"><div id="scan-code" class="menu-button">Scan Code</div></a>
+      <!-- <img class="menu-button" id="account-menu" src="./icons/account.png"> -->
     </div>
     <div class="content">
       <div class="left-side">
@@ -21,111 +22,251 @@
           </tr>
         </table> 
       </div>
-      <table id="user-table" v-if="data.users">
-        <tr>
-          <th v-for="(field, key) in data.users[0].columns" :key="key">
-            {{ transform(key) }}
-          </th>
-        </tr>
-        <tr>
-          <td v-for="amount in data.users[0].sum">
-            {{ amount }}
-          </td>
-        </tr>
-        <tr v-for="row in data.users" :key="row">
-          <td v-for="field in row.columns" :key="field">
-            {{ field }}
-          </td>
-        </tr>
-      </table>
+      <div class="table-wrapper">
+        <table id="user-table" v-if="data.users">
+          <tr>
+            <th v-for="(field, key) in data.users[0].columns" :key="key">
+              {{ transform(key) }}
+            </th>
+          </tr>
+          <tr>
+            <td v-for="amount in data.users[0].sum">
+              {{ amount }}
+            </td>
+          </tr>
+          <tr v-for="row in data.users" :key="row" :title="row.columns.first_name + ' ' + row.columns.last_name">
+            <td v-for="field, key in row.columns" :key="field" :class="`${key == 'first_name' ? 'stickycol' : ''}`">
+              {{ field }}
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.topmargin-tr {
-  padding-top: 5vh;
+@media (orientation: landscape) {
+  .topmargin-tr {
+    padding-top: 5vh;
+  }
+  .pushbutton {
+    cursor: pointer;
+    padding: 1vh;
+    border-radius: 8px;
+    background-color: black;
+    outline: none;
+    border: 1px solid white;
+    color: white;
+    box-shadow: 0 0 0.4vh rgba(255, 255, 255, 0.3);
+  }
+  .dateinput {
+    padding: 1vh;
+    border-radius: 8px;
+    background-color: black;
+    outline: none;
+    border: 1px solid white;
+    color: white;
+    box-shadow: 0 0 0.4vh rgba(255, 255, 255, 0.3);
+  }
+  .left-side {
+    height: fit-content;
+    width: 30%;
+    display: flex;
+    justify-content: center;
+  }
+  .content {
+    /* overflow-x: auto; */
+    background-color: #000;
+    display: flex;
+    min-height: 93vh;
+    color: #fff;
+    padding: 5vh 0;
+  }
+  .table-wrapper {
+    overflow-x: auto;
+    max-width: 60vw;
+  }
+  #user-table {
+    background-color: black;
+    color: #fff;
+    border-collapse: collapse;
+    margin: 0 0 0 0;
+    overflow-x: auto;
+  }
+  #user-table tr td {
+    padding: 0.5vh;
+  }
+  #user-table tr th {
+    padding: 1vh;
+    border-bottom: 1px solid grey;
+  }
+  #user-table tr:nth-child(2n) {
+    background-color: #222;
+  }
+  .menu-button {
+    transform: translateY(-50%);
+    filter: invert();
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+  }
+  #burger-menu {
+    left: 1%;
+  }
+  #account-menu {
+    right: 1%;
+  }
+  #scan-code {
+    right: 1%;
+    border: 2px solid rgb(255, 255, 255);
+    border-radius: 1vh;
+    padding: 1vh;
+    filter: none
+  }
+  #scan-code:hover {
+    background-color: white;
+    color: black;
+  }
+  *:visited {
+    color: white;
+  }
+  *:link {
+    color: white;
+  }
+  #header-all {
+    width: 100%;
+    background-color: #222;
+    color: #eee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 7vh;
+    position: sticky;
+    top: 0;
+  }
+  
+  .header-text {
+    font-weight: bold;
+    font-size: 2.4vh;
+  }
 }
-.pushbutton {
-  cursor: pointer;
-  padding: 1vh;
-  border-radius: 8px;
-  background-color: black;
-  outline: none;
-  border: 1px solid white;
-  color: white;
-  box-shadow: 0 0 0.4vh rgba(255, 255, 255, 0.3);
-}
-.dateinput {
-  padding: 1vh;
-  border-radius: 8px;
-  background-color: black;
-  outline: none;
-  border: 1px solid white;
-  color: white;
-  box-shadow: 0 0 0.4vh rgba(255, 255, 255, 0.3);
-}
-.left-side {
-  height: fit-content;
-  width: 40%;
-  display: flex;
-  justify-content: center;
-}
-.content {
-  background-color: #000;
-  display: flex;
-  min-height: 93vh;
-  color: #fff;
-  padding-top: 5vh;
-}
-#user-table {
-  background-color: black;
-  color: #fff;
-  border-collapse: collapse;
-  margin: 0 0 5vh 0;
-  overflow-x: auto;
-}
-#user-table tr td {
-  padding: 0.5vh;
-}
-#user-table tr th {
-  padding: 1vh;
-  border-bottom: 1px solid grey;
-}
-#user-table tr:nth-child(2n) {
-  background-color: #222;
-}
-.menu-button {
-  transform: translateY(-50%);
-  filter: invert();
-  cursor: pointer;
-  position: absolute;
-  top: 50%;
-}
-#burger-menu {
-  left: 1%;
-}
-#account-menu {
-  right: 1%;
-}
+</style>
 
-#header-all {
-  width: 100%;
-  background-color: #222;
-  color: #eee;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 7vh;
-  position: sticky;
-  top: 0;
-}
+<style scoped>
+@media (orientation: portrait) {
+  .stickycol {
+    position: sticky;
+    left: 0;
+    z-index: 999;
+    background-color: #00000077;
+  }
+  .topmargin-tr {
+    padding-top: 5vh;
+  }
+  .pushbutton {
+    cursor: pointer;
+    padding: 1vh;
+    border-radius: 8px;
+    background-color: black;
+    outline: none;
+    border: 1px solid white;
+    color: white;
+    box-shadow: 0 0 0.4vh rgba(255, 255, 255, 0.3);
+  }
+  .dateinput {
+    padding: 1vh;
+    border-radius: 8px;
+    background-color: black;
+    outline: none;
+    border: 1px solid white;
+    color: white;
+    box-shadow: 0 0 0.4vh rgba(255, 255, 255, 0.3);
+  }
+  .left-side {
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .content {
+    /* overflow-x: auto; */
+    background-color: #000;
+    display: flex;
+    flex-direction: column;
 
-.header-text {
-  font-weight: bold;
-  font-size: 2.4vh;
+    min-height: 93vh;
+    color: #fff;
+    padding: 5vh 0;
+  }
+  .table-wrapper {
+    overflow-x: auto;
+    max-width: 100vw;
+  }
+  #user-table {
+    background-color: black;
+    color: #fff;
+    border-collapse: collapse;
+    margin: 0 0 0 0;
+    overflow-x: auto;
+  }
+  #user-table tr td {
+    padding: 0.5vh;
+  }
+  #user-table tr th {
+    padding: 1vh;
+    border-bottom: 1px solid grey;
+  }
+  #user-table tr:nth-child(2n) {
+    background-color: #222;
+  }
+  .menu-button {
+    transform: translateY(-50%);
+    filter: invert();
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+  }
+  #burger-menu {
+    left: 1%;
+  }
+  #account-menu {
+    right: 1%;
+  }
+  #scan-code {
+    right: 1%;
+    border: 2px solid rgb(255, 255, 255);
+    border-radius: 1vh;
+    padding: 1vh;
+    filter: none
+  }
+  #scan-code:hover {
+    background-color: white;
+    color: black;
+  }
+  *:visited {
+    color: white;
+  }
+  *:link {
+    color: white;
+  }
+  #header-all {
+    width: 100%;
+    background-color: #222;
+    color: #eee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 7vh;
+    position: sticky;
+    top: 0;
+  }
+  
+  .header-text {
+    font-weight: bold;
+    font-size: 2.4vh;
+  }
 }
-
 </style>
 
 <script>
