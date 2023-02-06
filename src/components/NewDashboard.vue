@@ -1,6 +1,3 @@
-<script setup>
-</script>
-
 <template>
   <div>
     <div id="header-all">
@@ -9,11 +6,31 @@
       <img class="menu-button" id="account-menu" src="./icons/account.png">
     </div>
     <div class="content">
+      <div class="left-side">
+        <table class="config-table">
+          <tr>
+            <td>Von</td>
+            <td>Bis</td>
+          </tr>
+          <tr>
+            <td><input @change="[getData(), setMin()]" id="date-input-start" class="dateinput" type="date"></td>
+            <td><input @change="[getData(), setMax()]" id="date-input-end" class="dateinput" type="date"></td>
+          </tr>
+          <tr>
+            <td class="topmargin-tr"><button @click="exportExcel()" class="pushbutton">Generiere Excel</button></td>
+          </tr>
+        </table> 
+      </div>
       <table id="user-table" v-if="data.users">
         <tr>
           <th v-for="(field, key) in data.users[0].columns" :key="key">
             {{ transform(key) }}
           </th>
+        </tr>
+        <tr>
+          <td v-for="amount in data.users[0].sum">
+            {{ amount }}
+          </td>
         </tr>
         <tr v-for="row in data.users" :key="row">
           <td v-for="field in row.columns" :key="field">
@@ -26,16 +43,47 @@
 </template>
 
 <style scoped>
+.topmargin-tr {
+  padding-top: 5vh;
+}
+.pushbutton {
+  cursor: pointer;
+  padding: 1vh;
+  border-radius: 8px;
+  background-color: black;
+  outline: none;
+  border: 1px solid white;
+  color: white;
+  box-shadow: 0 0 0.4vh rgba(255, 255, 255, 0.3);
+}
+.dateinput {
+  padding: 1vh;
+  border-radius: 8px;
+  background-color: black;
+  outline: none;
+  border: 1px solid white;
+  color: white;
+  box-shadow: 0 0 0.4vh rgba(255, 255, 255, 0.3);
+}
+.left-side {
+  height: fit-content;
+  width: 40%;
+  display: flex;
+  justify-content: center;
+}
 .content {
   background-color: #000;
-  display: grid;
-  place-items: center;
+  display: flex;
+  min-height: 93vh;
+  color: #fff;
+  padding-top: 5vh;
 }
 #user-table {
   background-color: black;
   color: #fff;
   border-collapse: collapse;
-  margin: 5vh 0 5vh 0;
+  margin: 0 0 5vh 0;
+  overflow-x: auto;
 }
 #user-table tr td {
   padding: 0.5vh;
@@ -68,8 +116,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 3vh;
-  position: relative;
+  height: 7vh;
+  position: sticky;
+  top: 0;
 }
 
 .header-text {
@@ -109,10 +158,10 @@ export default {
       // let only_present = document.querySelector('#checkbox-only-present').checked;
       // let display_trainers = document.querySelector('#checkbox-display-trainers').checked;
 
-      // let day = document.querySelector('#date-input').value;
+      let day_start = document.querySelector('#date-input-start').value;
+      let day_end = document.querySelector('#date-input-end').value;
 
-      fetch(`http://${import.meta.env.VITE_API_URL}/attendance_new?day_start=2023-01-20&day_end=2023-01-24`, {
-      // fetch(`https://attendance-logger-api-production.up.railway.app/attendance?day=${day}&onlyPresentUsers=${this.numFromBool(only_present)}&displayTrainers=${this.numFromBool(display_trainers)}`, {
+      fetch(`${import.meta.env.VITE_API_URL ? 'http://' + import.meta.env.VITE_API_URL : 'https://attendance-logger-api-production.up.railway.app'}/attendance_new?day_start=${day_start}&day_end=${day_end}`, {
         method: 'GET',
         headers: {
           'Allow-Control-Access-Origin': '*'
@@ -136,8 +185,27 @@ export default {
       let date = new Date();
       return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() + 1}`;
     },
+    setDateInputToToday() {
+      let date = new Date();
+      document.querySelector('#date-input-start').value = date.toISOString().substring(0, 10);
+      document.querySelector('#date-input-end').value = date.toISOString().substring(0, 10);
+    },
+    setMax() {
+      document.querySelector('#date-input-start').setAttribute('max', document.querySelector('#date-input-end').value);
+    },
+    setMin() {
+      document.querySelector('#date-input-end').setAttribute('min', document.querySelector('#date-input-start').value);
+    },
+    exportExcel() {
+      let start_time = document.querySelector('#date-input-start').value;
+      let end_time = document.querySelector('#date-input-end').value;
+      window.open(`${import.meta.env.VITE_API_URL ? 'http://' + import.meta.env.VITE_API_URL : 'https://attendance-logger-api-production.up.railway.app'}/excel?day_start=${start_time}&day_end=${end_time}`)
+    }
   },
   mounted() {
+    this.setDateInputToToday();
+    this.setMax();
+    this.setMin();
     this.getData();
   }
 }
