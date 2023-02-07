@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div id="header-all">
+    <!-- <div id="header-all">
       <div class="header-text">Attendance Management</div>
       <img class="menu-button" id="burger-menu" src="./icons/menu.png">
       <a href="/scan"><div id="scan-code" class="menu-button">Scan Code</div></a>
-      <!-- <img class="menu-button" id="account-menu" src="./icons/account.png"> -->
-    </div>
+      <img class="menu-button" id="account-menu" src="./icons/account.png">
+    </div> -->
     <div class="content">
       <div class="left-side">
         <table class="config-table">
@@ -30,7 +30,7 @@
             </th>
           </tr>
           <tr>
-            <td v-for="amount in data.users[0].sum">
+            <td v-for="amount in data.users[0].sum" :key="amount">
               {{ amount }}
             </td>
           </tr>
