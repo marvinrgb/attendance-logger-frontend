@@ -1,10 +1,72 @@
 <script setup>
 import { RouterView } from 'vue-router';
+import Oidc from "oidc-client";
+
+
+let accessToken = "";
+let oidcClient = {};
+let clientConfig = {};
+let username = "";
+let user;
+
+
+function LoginUser() {
+  console.log('LoginUser()')
+  this.oidcClient.signinRedirect().catch((error) => {
+    console.log("Fehler beim Login!");
+    console.log(error);
+  });
+}
+function LogoutUser() {
+  this.oidcClient.signoutRedirect().catch(() => {
+    console.log("Fehler beim Logout!");
+  });
+}
+
+clientConfig = {
+  authority: 'https://oauth.id.jumpcloud.com/',
+  client_id: 'cbed7459-0268-4ea1-a06d-56cd2caf19f7',
+  redirect_uri: 'https://drab-pear-woodpecker-tutu.cyclic.app/',
+  response_type: "id_token token",
+  scope: "openid",
+  userStore: new Oidc.WebStorageStateStore({}),
+  post_logout_redirect_uri: 'https://drab-pear-woodpecker-tutu.cyclic.app/',
+};
+oidcClient = new Oidc.UserManager(clientConfig);
+oidcClient
+  .signinRedirectCallback()
+  .then(() => {
+    console.log("Signin Redirect erfolgreich");
+    oidcClient.getUser().then((user) => {
+      console.log(user);
+      username = user?.profile.name;
+      user = user?.profile.preferred_username;
+      accessToken = user?.access_token;
+    });
+  })
+  .catch(() => {
+    console.log("Fehler beim Signin Redirect");
+  });
+
+oidcClient
+  .getUser()
+  .then((user) => {
+    console.log(user)
+    username = user?.profile.name;
+    user = user?.profile.preferred_username;
+    accessToken = user?.access_token;
+  })
+  .catch(() => {
+    this.username = "";
+  });
+
+
 </script>
 
 <template>
   <div id="app-all">
     <div id="header-all">
+      <button @click="LoginUser()">Login</button>
       <div class="header-text">Attendance Management</div>
       <!-- <img class="menu-button" id="burger-menu" src="./components/icons/menu.png"> -->
       <!-- <a href="/user"><div id="user-link" class="menu-button">User Verwaltung</div></a> -->
@@ -101,16 +163,3 @@ import { RouterView } from 'vue-router';
 }
 </style>
 
-<script>
-export default {
-  data() {
-    return {
-      devices: Array,
-      messages: Object,
-      data: Object
-    }
-  },
-  mounted() {
-  }
-}
-</script>
