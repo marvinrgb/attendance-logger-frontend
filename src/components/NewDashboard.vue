@@ -302,7 +302,7 @@ export default {
       let day_start = document.querySelector('#date-input-start').value;
       let day_end = document.querySelector('#date-input-end').value;
 
-      fetch(`${import.meta.env.VITE_API_URL ? 'http://' + import.meta.env.VITE_API_URL : 'https://attendance-logger-api-production.up.railway.app'}/attendance_new?day_start=${day_start}&day_end=${day_end}`, {
+      fetch(`${import.meta.env.VITE_API_URL ? 'http://' + import.meta.env.VITE_API_URL : 'https://erratic-measure-production.up.railway.app'}/attendance_new?day_start=${day_start}&day_end=${day_end}`, {
         method: 'GET',
         headers: {
           'Allow-Control-Access-Origin': '*'
@@ -340,7 +340,7 @@ export default {
     exportExcel() {
       let start_time = document.querySelector('#date-input-start').value;
       let end_time = document.querySelector('#date-input-end').value;
-      window.open(`${import.meta.env.VITE_API_URL ? 'http://' + import.meta.env.VITE_API_URL : 'https://attendance-logger-api-production.up.railway.app'}/excel?day_start=${start_time}&day_end=${end_time}`)
+      window.open(`${import.meta.env.VITE_API_URL ? 'http://' + import.meta.env.VITE_API_URL : 'https://erratic-measure-production.up.railway.app'}/excel?day_start=${start_time}&day_end=${end_time}`)
     }
   },
   mounted() {

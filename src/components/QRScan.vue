@@ -92,7 +92,7 @@ export default {
       this.data.scanned_codes.push(decodedText);
       this.data.responsetext = "Übermittle Daten...";
       this.$forceUpdate();
-      fetch(`${import.meta.env.VITE_API_URL ? 'http://' + import.meta.env.VITE_API_URL : 'https://attendance-logger-api-production.up.railway.app'}/attendance/${decodedText}`, {
+      fetch(`${import.meta.env.VITE_API_URL ? 'http://' + import.meta.env.VITE_API_URL : 'https://erratic-measure-production.up.railway.app'}/attendance/${decodedText}`, {
         method: 'POST'
       })
       .then((res) => res.json())

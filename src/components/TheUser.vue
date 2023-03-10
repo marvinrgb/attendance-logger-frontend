@@ -150,7 +150,7 @@ export default {
   methods: {
     deleteUser(id, name) {
       if (confirm(`User ${name} Löschen?`)) {
-        fetch(`${import.meta.env.VITE_API_URL ? 'http://' + import.meta.env.VITE_API_URL : 'https://attendance-logger-api-production.up.railway.app'}/user/${id}`, {
+        fetch(`${import.meta.env.VITE_API_URL ? 'http://' + import.meta.env.VITE_API_URL : 'https://erratic-measure-production.up.railway.app'}/user/${id}`, {
         method: 'DELETE'
       })
       .then((res) => console.log(res));
@@ -171,7 +171,7 @@ export default {
         "birth" : new Date(Date.parse(document.querySelector('#birth-date').value)).toISOString(),
         "type" : document.querySelector('#is-trainer').checked ? 'trainer' : 'schueler'
       }
-      fetch(`${import.meta.env.VITE_API_URL ? 'http://' + import.meta.env.VITE_API_URL : 'https://attendance-logger-api-production.up.railway.app'}/user`, {
+      fetch(`${import.meta.env.VITE_API_URL ? 'http://' + import.meta.env.VITE_API_URL : 'https://erratic-measure-production.up.railway.app'}/user`, {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
@@ -206,7 +206,7 @@ export default {
       return num;
     },
     getUsers() {
-      fetch(`${import.meta.env.VITE_API_URL ? 'http://' + import.meta.env.VITE_API_URL : 'https://attendance-logger-api-production.up.railway.app'}/users`, {
+      fetch(`${import.meta.env.VITE_API_URL ? 'http://' + import.meta.env.VITE_API_URL : 'https://erratic-measure-production.up.railway.app'}/users`, {
         method: 'GET',
         headers: {
           'Allow-Control-Access-Origin': '*'
