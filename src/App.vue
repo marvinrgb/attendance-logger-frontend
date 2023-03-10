@@ -12,13 +12,13 @@ let user;
 
 function LoginUser() {
   console.log('LoginUser()')
-  this.oidcClient.signinRedirect().catch((error) => {
+  oidcClient.signinRedirect().catch((error) => {
     console.log("Fehler beim Login!");
     console.log(error);
   });
 }
 function LogoutUser() {
-  this.oidcClient.signoutRedirect().catch(() => {
+  oidcClient.signoutRedirect().catch(() => {
     console.log("Fehler beim Logout!");
   });
 }
